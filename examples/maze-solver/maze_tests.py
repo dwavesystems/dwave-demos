@@ -294,9 +294,9 @@ class TestMazeSolverResponse(unittest.TestCase):
         self.compare(response_sample, expected_solution)
 
 
-class TestBuildBqm(unittest.TestCase):
+class TestGetMazeBqm(unittest.TestCase):
     def test_bqm_return(self):
-        """build_bqm(..) is merely a wrapper. This test is just to ensure that the wrapper works.
+        """get_maze_bqm(..) is merely a wrapper. This test is to ensure that the wrapper works.
         """
         # Create maze
         n_rows = 2
