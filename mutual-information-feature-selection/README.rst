@@ -105,10 +105,3 @@ The approximated equation for MI can now be formed as a QUBO:
 
 where the penalty is some multiple of :math:`\sum_{i} (x_i - k)^2` that enforces
 the constraint of :math:`k` features.
-
-
-To be obsoleted:
-----------------
-
-main file: File Titanic_FS.ipynb
-write up: [Quantum Annealing Feature Selection](https://confluence.dwavesys.com/x/JzaiAg)
