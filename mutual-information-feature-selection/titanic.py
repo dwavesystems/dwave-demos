@@ -13,6 +13,7 @@ from dwave.embedding.chimera import find_clique_embedding
 from dwave.system import DWaveSampler, FixedEmbeddingComposite
 
 # Read the feature-engineered data into a pandas dataframe
+# Data obtained from http://biostat.mc.vanderbilt.edu/DataSets
 datapath = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                         'data',
                         'formatted_titanic.csv')
