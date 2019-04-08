@@ -18,6 +18,7 @@ datapath = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                         'formatted_titanic.csv')
 dataset = pd.read_csv(datapath)
 
+
 # Define MI calculations
 def prob(dataset):
     """Joint probability distribution P(X) for the given data."""
@@ -29,31 +30,41 @@ def prob(dataset):
     prob, _ = np.histogramdd(dataset, bins)
     return prob / np.sum(prob)
 
+
 def shannon_entropy(p):
-    """Shannon entropy H(X) is the sum of P(X)log(P(X)) for probabilty distribution P(X)."""
+    """Shannon entropy H(X) is the sum of P(X)log(P(X)) for probabilty
+    distribution P(X).
+    """
     p = p.flatten()
     return -sum(pi*np.log2(pi) for pi in p if pi)
+
 
 def conditional_shannon_entropy(p, *conditional_indices):
     """Conditional Shannon entropy H(X;Y) = H(X,Y) - H(Y)."""
 
-    axis = tuple(i for i in np.arange(len(p.shape)) if i not in conditional_indices)
+    axis = tuple(i for i in np.arange(len(p.shape))
+                 if i not in conditional_indices)
 
     return shannon_entropy(p) - shannon_entropy(np.sum(p, axis=axis))
+
 
 def mutual_information(prob, j):
     """Mutual information between variables X and variable Y.
 
     Calculated as I(X; Y) = H(X) - H(X|Y)."""
 
-    return shannon_entropy(np.sum(prob, axis=j)) - conditional_shannon_entropy(prob, j)
+    return (shannon_entropy(np.sum(prob, axis=j))
+            - conditional_shannon_entropy(prob, j))
+
 
 def conditional_mutual_information(p, j, *conditional_indices):
     """Mutual information between variables X and variable Y conditional on variable Z.
 
     Calculated as I(X;Y|Z) = H(X|Z) - H(X|Y,Z)"""
 
-    return conditional_shannon_entropy(np.sum(p, axis=j), *conditional_indices) - conditional_shannon_entropy(p, j, *conditional_indices)
+    return (conditional_shannon_entropy(np.sum(p, axis=j), *conditional_indices)
+            - conditional_shannon_entropy(p, j, *conditional_indices))
+
 
 # Rank the MI between survival and every other variable
 scores = {}
@@ -100,7 +111,7 @@ selected_features = np.zeros((len(features), len(features)))
 for k in range(1, len(features) + 1):
     kbqm = bqm.copy()
     kbqm.update(dimod.generators.combinations(features, k,
-                                              strength=6)) # Determines the penalty
+                                              strength=6))  # Determines the penalty
 
     # sample = sampler.sample(kbqm, num_reads=10000).first.sample
     sample = dimod.ExactSolver().sample(kbqm).first.sample
