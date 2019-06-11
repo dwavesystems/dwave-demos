@@ -11,7 +11,7 @@ jobs:
       # Note: SUM_REQ_FILE is hardcoded for save_cache and restore_cache. See dicussion on
       # https://discuss.circleci.com/t/cannot-use-circle-yml-environment-variables-in-cache-keys/10994/20
       SUM_REQ_FILE: temp_requirements_summary.txt
-      IGNORED_DIRS: envs|tests|circuit-fault-diagnosis|factoring
+      IGNORED_DIRS: envs|tests|circuit-fault-diagnosis|factoring|job-shop-scheduling|qboost|satellite-placement|structural-imbalance
 
     steps:
       - checkout
@@ -34,7 +34,7 @@ jobs:
               fi
             done
       - restore_cache:
-          key: v2-dependencies-{{ checksum "temp_requirements_summary.txt" }}-{{ .Environment.CIRCLE_JOB }}
+          key: v4-dependencies-{{ checksum "temp_requirements_summary.txt" }}-{{ .Environment.CIRCLE_JOB }}
       - run: &install-dependences-template
           name: Install dependences
           command: |
@@ -44,17 +44,33 @@ jobs:
             for demo in !($IGNORED_DIRS); do
               if [ -d "$demo" ]; then
                 (
+
+                  # Call pyenv if we are using MacOS
+                  os="$(uname -s)"
+                  if [ "$os" == "Darwin" ]; then
+                    eval "$(pyenv init -)"
+                    pyenv local $PYTHON
+                  fi
+
+                  # Create demo specific virtual environments
                   env="envs/$demo"
                   python -m virtualenv "$env"
                   . "$env/bin/activate"
 
                   pip install -r "$demo/requirements.txt"
                   pip install coverage
+
+                  # Python 2.7 case
+                  # Note: using 2>&1 because python 2.7 sends version info to stderr
+                  python_version="$(python --version 2>&1)"
+                  if [[ "$python_version" =~ ^Python\ 2\.7\.[0-9]+$ ]]; then
+                    pip install mock
+                  fi
                 )
               fi
             done
       - save_cache:
-          key: v1-dependencies-{{ checksum "temp_requirements_summary.txt" }}-{{ .Environment.CIRCLE_JOB }}
+          key: v4-dependencies-{{ checksum "temp_requirements_summary.txt" }}-{{ .Environment.CIRCLE_JOB }}
           paths:
             - envs
 
@@ -99,7 +115,7 @@ jobs:
       PYTHON: 3.7.0
       HOMEBREW_NO_AUTO_UPDATE: 1
       SUM_REQ_FILE: temp_requirements_summary.txt  # Note: hardcoded for save_cache and restore_cache
-      IGNORED_DIRS: envs|tests|circuit-fault-diagnosis|factoring
+      IGNORED_DIRS: envs|tests|circuit-fault-diagnosis|factoring|job-shop-scheduling|qboost|satellite-placement|structural-imbalance
 
     working_directory: ~/repo
 
@@ -126,10 +142,10 @@ jobs:
       # Restore cache
       - run: *set-requirements-summary-template
       - restore_cache:
-          key: v1-dependencies-{{ checksum "temp_requirements_summary.txt" }}-{{ .Environment.CIRCLE_JOB }}
+          key: v4-dependencies-{{ checksum "temp_requirements_summary.txt" }}-{{ .Environment.CIRCLE_JOB }}
       - run: *install-dependences-template
       - save_cache:
-          key: v1-dependencies-{{ checksum "temp_requirements_summary.txt" }}-{{ .Environment.CIRCLE_JOB }}
+          key: v4-dependencies-{{ checksum "temp_requirements_summary.txt" }}-{{ .Environment.CIRCLE_JOB }}
           paths:
             - envs
 
@@ -143,7 +159,7 @@ jobs:
       PYTHON: 3.6.5
       HOMEBREW_NO_AUTO_UPDATE: 1
       SUM_REQ_FILE: temp_requirements_summary.txt
-      IGNORED_DIRS: envs|tests|circuit-fault-diagnosis|factoring
+      IGNORED_DIRS: envs|tests|circuit-fault-diagnosis|factoring|job-shop-scheduling|qboost|satellite-placement|structural-imbalance
 
   test-osx-3.5:
     <<: *osx-tests-template
@@ -151,7 +167,7 @@ jobs:
       PYTHON: 3.5.5
       HOMEBREW_NO_AUTO_UPDATE: 1
       SUM_REQ_FILE: temp_requirements_summary.txt
-      IGNORED_DIRS: envs|tests|circuit-fault-diagnosis|factoring
+      IGNORED_DIRS: envs|tests|circuit-fault-diagnosis|factoring|job-shop-scheduling|qboost|satellite-placement|structural-imbalance
 
   test-osx-2.7:
     <<: *osx-tests-template
@@ -159,7 +175,7 @@ jobs:
       PYTHON: 2.7.15
       HOMEBREW_NO_AUTO_UPDATE: 1
       SUM_REQ_FILE: temp_requirements_summary.txt
-      IGNORED_DIRS: envs|tests|circuit-fault-diagnosis|factoring
+      IGNORED_DIRS: envs|tests|circuit-fault-diagnosis|factoring|job-shop-scheduling|qboost|satellite-placement|structural-imbalance
 
 
   deploy:

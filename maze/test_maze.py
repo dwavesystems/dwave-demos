@@ -12,13 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import dwave.system.samplers
+import dwave.system.composites
 import itertools
 import re
 import unittest
 
 from dimod import BinaryQuadraticModel
+from dwave.system.testing import MockDWaveSampler
+
+try:
+    from unittest import mock
+except ImportError:
+    import mock
+
 from maze import Maze, get_label, get_maze_bqm
-from neal import SimulatedAnnealingSampler
 
 
 def fill_with_zeros(solution_dict, n_rows, n_cols, ignore_list=None):
@@ -282,16 +290,18 @@ class TestMazeSolverResponse(unittest.TestCase):
         maze = Maze(n_rows, n_cols, start, end, walls)
         bqm = maze.get_bqm()
 
-        # Sample and test that a response is given
-        sampler = SimulatedAnnealingSampler()
-        response = sampler.sample(bqm, num_reads=1000)
-        response_sample = next(response.samples())
-        self.assertGreaterEqual(len(response), 1)
+        with mock.patch('dwave.system.samplers.DWaveSampler', MockDWaveSampler):
+            # Sample and test that a response is given
+            #TODO: need to add solver dict back into DWaveSampler
+            sampler = dwave.system.composites.EmbeddingComposite(dwave.system.samplers.DWaveSampler())
+            response = sampler.sample(bqm, num_reads=1000)
+            response_sample = next(response.samples())
+            self.assertGreaterEqual(len(response), 1)
 
-        # Test heuristic response
-        expected_solution = {'0,1w': 1, '1,1n': 1, '1,1w': 1, '2,0n': 1, '2,1w': 1, '2,2w': 1}
-        fill_with_zeros(expected_solution, n_rows, n_cols, [start, end])
-        self.compare(response_sample, expected_solution)
+            # Test heuristic response
+            expected_solution = {'0,1w': 1, '1,1n': 1, '1,1w': 1, '2,0n': 1, '2,1w': 1, '2,2w': 1}
+            fill_with_zeros(expected_solution, n_rows, n_cols, [start, end])
+            self.compare(response_sample, expected_solution)
 
 
 class TestGetMazeBqm(unittest.TestCase):
