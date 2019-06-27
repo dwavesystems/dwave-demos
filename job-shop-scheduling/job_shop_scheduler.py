@@ -19,12 +19,13 @@ from bisect import bisect_right
 import dwavebinarycsp
 
 
-def get_jss_bqm(job_dict, max_time=None):
+def get_jss_bqm(job_dict, max_time=None, stitch_kwargs={}):
     """Returns a BQM to the Job Shop Scheduling problem.
 
     Args:
         job_dict: A dict. Contains the jobs we're interested in scheduling. (See Example below.)
         max_time: An integer. The upper bound on the amount of time the schedule can take.
+        stitch_kwargs: A dict. Kwargs to be passed through get_jss_bqm to dwavebinarycsp.stitch.
 
     Returns:
         A dimod.BinaryQuadraticModel. Note: The nodes in the BQM are labelled in the format,
@@ -43,7 +44,7 @@ def get_jss_bqm(job_dict, max_time=None):
                    "b": [("mixer", 1)],
                    "c": [("oven", 2)]}
         >>> max_time = 4	  # Put an upperbound on how long the schedule can be
-        >>> bqm = get_jss_bqm(jobs, max_time)
+        >>> bqm = get_jss_bqm(jobs, max_time, stitch_kwargs)
 
         >>> # May need to tweak the chain strength and the number of reads
         >>> sampler = EmbeddingComposite(DWaveSampler(solver={'qpu':True}))
@@ -67,7 +68,7 @@ def get_jss_bqm(job_dict, max_time=None):
           - Hence, at time 0, Job a's 1st task is not run
     """
     scheduler = JobShopScheduler(job_dict, max_time)
-    return scheduler.get_bqm()
+    return scheduler.get_bqm(stitch_kwargs)
 
 
 def sum_to_one(*args):
@@ -236,8 +237,11 @@ class JobShopScheduler:
                 label = get_label(task, (self.max_time - 1) - t)  # -1 for zero-indexed time
                 self.csp.fix_variable(label, 0)
 
-    def get_bqm(self):
+    def get_bqm(self, stitch_kwargs={}):
         """Returns a BQM to the Job Shop Scheduling problem.
+
+        Args:
+            stitch_kwargs: A dict. Kwargs to be passed to dwavebinarycsp.stitch.
         """
         # Apply constraints to self.csp
         self._add_one_start_constraint()
@@ -246,7 +250,7 @@ class JobShopScheduler:
         self._remove_absurd_times()
 
         # Get BQM
-        bqm = dwavebinarycsp.stitch(self.csp)
+        bqm = dwavebinarycsp.stitch(self.csp, **stitch_kwargs)
 
         # Edit BQM to encourage the shortest schedule
         # Overview of this added penalty:

@@ -19,6 +19,7 @@ import unittest
 from dimod import ExactSolver, BinaryQuadraticModel
 from job_shop_scheduler import JobShopScheduler, get_jss_bqm
 from tabu import TabuSampler
+from dwavebinarycsp.exceptions import ImpossibleBQM
 
 
 def fill_with_zeros(expected_solution_dict, job_dict, max_time):
@@ -384,6 +385,30 @@ class TestGetJssBqm(unittest.TestCase):
 
         bqm = get_jss_bqm(jobs, max_time)
         self.assertIsInstance(bqm, BinaryQuadraticModel)
+
+    def test_stitch_kwargs(self):
+        """ Ensure stitch_kwargs is being passed through get_jss_bqm to dwavebinarycsp.stitch
+        """
+        jobs = {"sandwich": [("bread", 1), ("roast_beef", 1)],
+                "french_toast": [("egg", 1), ("bread", 1)]}
+        max_time = 3
+        impossible_stitch_kwargs = {"max_graph_size": 0}
+
+        # ImpossibleBQM should be raised, as the max_graph size is too small
+        self.assertRaises(ImpossibleBQM, get_jss_bqm, jobs, max_time, impossible_stitch_kwargs)
+
+
+class TestGetBqm(unittest.TestCase):
+    def test_stitch_kwargs(self):
+        """ Ensure stitch_kwargs is being passed to dwavebinarycsp.stitch
+        """
+        jobs = {"sandwich": [("bread", 1), ("roast_beef", 1)],
+                "french_toast": [("egg", 1), ("bread", 1)]}
+        max_time = 3
+        impossible_stitch_kwargs = {"max_graph_size": 0}
+
+        # ImpossibleBQM should be raised, as the max_graph size is too small
+        self.assertRaises(ImpossibleBQM, get_jss_bqm, jobs, max_time, impossible_stitch_kwargs)
 
 
 if __name__ == "__main__":
