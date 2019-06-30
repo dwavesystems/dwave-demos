@@ -225,17 +225,25 @@ class JobShopScheduler:
     def _remove_absurd_times(self):
         """Sets impossible task times in self.csp to 0.
         """
-        # TODO: deal with overlaps in time
-        for task in self.tasks:
-            # Times that are too early for task
-            for t in range(task.position):
-                label = get_label(task, t)
-                self.csp.fix_variable(label, 0)
+        jobs = set([task.job for task in self.tasks])
+        for job in jobs:
+            job_tasks = sorted([task for task in self.tasks if task.job == job], key=lambda x: x.position)
+            predecessor_time = 0
+            successor_time = sum([job_task.duration for job_task in job_tasks])
+            for job_task in job_tasks:
+                # Times that are too early for task
+                for t in range(predecessor_time):
+                    label = get_label(job_task, t)
+                    self.csp.fix_variable(label, 0)
 
-            # Times that are too late for task to complete
-            for t in range(task.duration - 1):  # -1 to ignore duration==1
-                label = get_label(task, (self.max_time - 1) - t)  # -1 for zero-indexed time
-                self.csp.fix_variable(label, 0)
+                # Times that are too late for task
+                for t in range(successor_time - 1): # -1 to ignore duration==1
+                    label = get_label(job_task, (self.max_time - 1) - t) # -1 for zero-indexed time
+                    self.csp.fix_variable(label, 0)
+
+                # Adjust times
+                predecessor_time += job_task.duration
+                successor_time -= job_task.duration
 
     def get_bqm(self, stitch_kwargs={}):
         """Returns a BQM to the Job Shop Scheduling problem.
@@ -289,6 +297,8 @@ class JobShopScheduler:
         # - Therefore, with this penalty scheme, all optimal solution penalties < any non-optimal
         #   solution penalties
         base = len(self.last_task_indices) + 1     # Base for exponent
+        # Get our pruned (remove_absurd_times) variable list so we don't undo pruning
+        pruned_variables = list(bqm.variables)
         for i in self.last_task_indices:
             task = self.tasks[i]
 
@@ -302,7 +312,8 @@ class JobShopScheduler:
                 # Add bias to variable
                 bias = 2 * base**(end_time - self.max_time)
                 label = get_label(task, t)
-                bqm.add_variable(label, bias)
+                if label in pruned_variables:
+                    bqm.add_variable(label, bias)
 
         return bqm
 
