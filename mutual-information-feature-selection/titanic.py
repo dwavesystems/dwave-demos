@@ -93,8 +93,10 @@ for feature in features:
 
 # Add interactions as (negative) MI with survival for each set of 2 features
 for f0, f1 in itertools.combinations(features, 2):
-    mi = conditional_mutual_information(prob(dataset[['survived', f0, f1]].values), 1, 2)
-    bqm.add_interaction(f0, f1, -mi)
+    cmi_01 = conditional_mutual_information(prob(dataset[['survived', f0, f1]].values), 1, 2)
+    cmi_10 = conditional_mutual_information(prob(dataset[['survived', f1, f0]].values), 1, 2)
+    bqm.add_interaction(f0, f1, -cmi_01)
+    bqm.add_interaction(f1, f0, -cmi_10)
 
 bqm.normalize()  # Normalize biases & interactions to the range -1, 1
 
