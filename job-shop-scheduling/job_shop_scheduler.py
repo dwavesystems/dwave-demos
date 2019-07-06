@@ -19,7 +19,7 @@ from bisect import bisect_right
 import dwavebinarycsp
 
 
-def get_jss_bqm(job_dict, max_time=None, stitch_kwargs={}):
+def get_jss_bqm(job_dict, max_time=None, stitch_kwargs=None):
     """Returns a BQM to the Job Shop Scheduling problem.
 
     Args:
@@ -68,6 +68,8 @@ def get_jss_bqm(job_dict, max_time=None, stitch_kwargs={}):
           - Hence, at time 0, Job a's 1st task is not run
     """
     scheduler = JobShopScheduler(job_dict, max_time)
+    if stitch_kwargs == None:
+        stitch_kwargs = {}
     return scheduler.get_bqm(stitch_kwargs)
 
 
@@ -245,7 +247,7 @@ class JobShopScheduler:
                 predecessor_time += job_task.duration
                 successor_time -= job_task.duration
 
-    def get_bqm(self, stitch_kwargs={}):
+    def get_bqm(self, stitch_kwargs=None):
         """Returns a BQM to the Job Shop Scheduling problem.
 
         Args:
@@ -258,6 +260,8 @@ class JobShopScheduler:
         self._remove_absurd_times()
 
         # Get BQM
+        if stitch_kwargs == None:
+            stitch_kwargs = {}
         bqm = dwavebinarycsp.stitch(self.csp, **stitch_kwargs)
 
         # Edit BQM to encourage the shortest schedule
