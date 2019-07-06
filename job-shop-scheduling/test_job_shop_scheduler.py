@@ -387,7 +387,7 @@ class TestGetJssBqm(unittest.TestCase):
         self.assertIsInstance(bqm, BinaryQuadraticModel)
 
     def test_stitch_kwargs(self):
-        """ Ensure stitch_kwargs is being passed through get_jss_bqm to dwavebinarycsp.stitch
+        """Ensure stitch_kwargs is being passed through get_jss_bqm to dwavebinarycsp.stitch
         """
         jobs = {"sandwich": [("bread", 1), ("roast_beef", 1)],
                 "french_toast": [("egg", 1), ("bread", 1)]}
@@ -400,7 +400,7 @@ class TestGetJssBqm(unittest.TestCase):
 
 class TestGetBqm(unittest.TestCase):
     def test_stitch_kwargs(self):
-        """ Ensure stitch_kwargs is being passed to dwavebinarycsp.stitch
+        """Ensure stitch_kwargs is being passed to dwavebinarycsp.stitch
         """
         jobs = {"sandwich": [("bread", 1), ("roast_beef", 1)],
                 "french_toast": [("egg", 1), ("bread", 1)]}
