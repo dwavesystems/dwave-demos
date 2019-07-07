@@ -227,25 +227,36 @@ class JobShopScheduler:
     def _remove_absurd_times(self):
         """Sets impossible task times in self.csp to 0.
         """
-        jobs = set([task.job for task in self.tasks])
-        for job in jobs:
-            job_tasks = [task for task in self.tasks if task.job == job]
-            predecessor_time = 0
-            successor_time = sum([job_task.duration for job_task in job_tasks])
-            for job_task in job_tasks:
-                # Times that are too early for task
-                for t in range(predecessor_time):
-                    label = get_label(job_task, t)
-                    self.csp.fix_variable(label, 0)
+        # Times that are too early for task
+        predecessor_time = 0
+        current_job = self.tasks[0].job
+        for task in self.tasks:
+            # Check if task is in current_job
+            if task.job != current_job:
+                predecessor_time = 0
+                current_job = task.job
 
-                # Times that are too late for task
-                for t in range(successor_time - 1): # -1 to ignore duration==1
-                    label = get_label(job_task, (self.max_time - 1) - t) # -1 for zero-indexed time
-                    self.csp.fix_variable(label, 0)
+            for t in range(predecessor_time):
+                label = get_label(task, t)
+                self.csp.fix_variable(label, 0)
 
-                # Adjust times
-                predecessor_time += job_task.duration
-                successor_time -= job_task.duration
+            predecessor_time += task.duration
+
+        # Times that are too late for task
+        # Note: we are going through the task list backwards in order to compute
+        # the successor time
+        successor_time = -1    # start with -1 so that we get (total task time - 1)
+        current_job = self.tasks[-1].job
+        for task in self.tasks[::-1]:
+            # Check if task is in current_job
+            if task.job != current_job:
+                successor_time = -1
+                current_job = task.job
+
+            successor_time += task.duration
+            for t in range(successor_time):
+                label = get_label(task, (self.max_time - 1) - t) # -1 for zero-indexed time
+                self.csp.fix_variable(label, 0)
 
     def get_bqm(self, stitch_kwargs=None):
         """Returns a BQM to the Job Shop Scheduling problem.
