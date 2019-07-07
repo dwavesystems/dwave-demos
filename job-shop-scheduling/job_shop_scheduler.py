@@ -229,7 +229,7 @@ class JobShopScheduler:
         """
         jobs = set([task.job for task in self.tasks])
         for job in jobs:
-            job_tasks = sorted([task for task in self.tasks if task.job == job], key=lambda x: x.position)
+            job_tasks = [task for task in self.tasks if task.job == job]
             predecessor_time = 0
             successor_time = sum([job_task.duration for job_task in job_tasks])
             for job_task in job_tasks:
