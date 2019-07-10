@@ -67,9 +67,10 @@ def get_jss_bqm(job_dict, max_time=None, stitch_kwargs=None):
           - Job a's 1st task is ("oven", 1)
           - Hence, at time 0, Job a's 1st task is not run
     """
-    scheduler = JobShopScheduler(job_dict, max_time)
     if stitch_kwargs == None:
         stitch_kwargs = {}
+
+    scheduler = JobShopScheduler(job_dict, max_time)
     return scheduler.get_bqm(stitch_kwargs)
 
 
@@ -264,6 +265,9 @@ class JobShopScheduler:
         Args:
             stitch_kwargs: A dict. Kwargs to be passed to dwavebinarycsp.stitch.
         """
+        if stitch_kwargs == None:
+            stitch_kwargs = {}
+
         # Apply constraints to self.csp
         self._add_one_start_constraint()
         self._add_precedence_constraint()
@@ -271,8 +275,6 @@ class JobShopScheduler:
         self._remove_absurd_times()
 
         # Get BQM
-        if stitch_kwargs == None:
-            stitch_kwargs = {}
         bqm = dwavebinarycsp.stitch(self.csp, **stitch_kwargs)
 
         # Edit BQM to encourage the shortest schedule
