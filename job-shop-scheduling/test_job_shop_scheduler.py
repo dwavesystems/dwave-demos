@@ -392,10 +392,10 @@ class TestGetJssBqm(unittest.TestCase):
         jobs = {"sandwich": [("bread", 1), ("roast_beef", 1)],
                 "french_toast": [("egg", 1), ("bread", 1)]}
         max_time = 3
-        impossible_stitch_kwargs = {"max_graph_size": 0}
+        bad_stitch_kwargs = {"max_graph_size": 0}
 
         # ImpossibleBQM should be raised, as the max_graph size is too small
-        self.assertRaises(ImpossibleBQM, get_jss_bqm, jobs, max_time, impossible_stitch_kwargs)
+        self.assertRaises(ImpossibleBQM, get_jss_bqm, jobs, max_time, bad_stitch_kwargs)
 
 
 class TestGetBqm(unittest.TestCase):
@@ -405,10 +405,11 @@ class TestGetBqm(unittest.TestCase):
         jobs = {"sandwich": [("bread", 1), ("roast_beef", 1)],
                 "french_toast": [("egg", 1), ("bread", 1)]}
         max_time = 3
-        impossible_stitch_kwargs = {"max_graph_size": 0}
+        bad_stitch_kwargs = {"max_graph_size": 0}
 
         # ImpossibleBQM should be raised, as the max_graph size is too small
-        self.assertRaises(ImpossibleBQM, get_jss_bqm, jobs, max_time, impossible_stitch_kwargs)
+        scheduler = JobShopScheduler(jobs, max_time)
+        self.assertRaises(ImpossibleBQM, scheduler.get_bqm, bad_stitch_kwargs)
 
 
 if __name__ == "__main__":
