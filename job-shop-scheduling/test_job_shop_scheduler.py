@@ -392,9 +392,14 @@ class TestGetJssBqm(unittest.TestCase):
         jobs = {"sandwich": [("bread", 1), ("roast_beef", 1)],
                 "french_toast": [("egg", 1), ("bread", 1)]}
         max_time = 3
-        bad_stitch_kwargs = {"max_graph_size": 0}
+
+        # Verify that reasonable stitch args result in a BQM
+        good_stitch_kwargs = {"max_graph_size": 6, "min_classical_gap": 1.5}
+        bqm = get_jss_bqm(jobs, max_time, good_stitch_kwargs)
+        self.assertIsInstance(bqm, BinaryQuadraticModel)
 
         # ImpossibleBQM should be raised, as the max_graph size is too small
+        bad_stitch_kwargs = {"max_graph_size": 0}
         self.assertRaises(ImpossibleBQM, get_jss_bqm, jobs, max_time, bad_stitch_kwargs)
 
 
@@ -405,9 +410,15 @@ class TestGetBqm(unittest.TestCase):
         jobs = {"sandwich": [("bread", 1), ("roast_beef", 1)],
                 "french_toast": [("egg", 1), ("bread", 1)]}
         max_time = 3
-        bad_stitch_kwargs = {"max_graph_size": 0}
+
+        # Verify that reasonable stitch args result in a BQM
+        good_stitch_kwargs = {"max_graph_size": 6, "min_classical_gap": 1.5}
+        scheduler = JobShopScheduler(jobs, max_time)
+        bqm = scheduler.get_bqm(good_stitch_kwargs)
+        self.assertIsInstance(bqm, BinaryQuadraticModel)
 
         # ImpossibleBQM should be raised, as the max_graph size is too small
+        bad_stitch_kwargs = {"max_graph_size": 0}
         scheduler = JobShopScheduler(jobs, max_time)
         self.assertRaises(ImpossibleBQM, scheduler.get_bqm, bad_stitch_kwargs)
 
