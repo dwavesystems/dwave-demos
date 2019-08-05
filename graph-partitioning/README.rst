@@ -1,6 +1,6 @@
 Graph Partitioning Demo
 =======================
-In this demo, we explore the graph partitioning problem.  This is an interesting problem from graph theory with a wide variety of applications.
+In this demo, we explore the graph partitioning problem.  This is an interesting problem from graph theory with a wide variety of applications (see e.g. [3]_).
 
 For example, suppose that we have a group of people that we need to split into two equal-sized teams.  For each pair of people there is a relationship:  friends or enemies.  We want to have as few friends on opposite teams as possible.  How can we solve this problem?
 
@@ -41,7 +41,7 @@ Next we need to consider our constraint:  Subset 0 and Subset 1 must have the sa
 
 .. image:: readme_imgs/constraint_1.png
 
-For a QUBO, we need our constraints to be represented by mathematical expressions that are satisfied at the minimum value.  For this constraint, we can use the following expression that has a minimum value of 0 that occurs when Subset 1 has size exactly |V|/2.
+For a QUBO, we need our constraints to be represented by mathematical expressions that are satisfied at the minimum value.  For this constraint, we can use the following expression that has a minimum value of 0 that occurs when Subset 1 has size exactly `|V|`/2.
 
 .. image:: readme_imgs/constraint_2.png
 
@@ -56,10 +56,12 @@ Next we can simplify this expression down to linear and quadratic terms for our 
 To combine our objective and constraints into a single QUBO expression, we simply add together the objective function and our constraint (multiplied by gamma, the Lagrange parameter).  
 
 .. image:: readme_imgs/final_QUBO.png
+   :align: center
+   :height: 100
 
 In the code, we create this Q matrix as a dictionary iteratively, looping over the edges and nodes in our graph just as we see in the summation of our QUBO expression.
 
-This demo generates an Erdos-Renyi random graph using the ``networkx`` package for our problem instance.  The graph is constructed with 40 nodes, and each possible edge between two nodes appears with probability p=0.20.
+This demo generates an Erdos-Renyi random graph using the ``networkx`` package for our problem instance [1]_.  The graph is constructed with 40 nodes, and each possible edge between two nodes appears with probability p=0.20.
 
 There are three parameters to be set by the user in this code:  chain strength, number of reads, and gamma.  Since this is a relatively large problem, we set a large number of reads (shown on line 23 with ``num_reads = 1000``).  
 
@@ -69,11 +71,11 @@ For gamma, our Lagrange parameter, a good number to start with is an estimate fo
 
 References
 ----------
-NetworkX Documentation, https://networkx.github.io/documentation/stable/reference/generated/networkx.generators.random_graphs.gnp_random_graph.html#networkx.generators.random_graphs.gnp_random_graph.
+.. [1] Aric A. Hagberg, Daniel A. Schult and Pieter J. Swart, “Exploring network structure, dynamics, and function using NetworkX”, in Proceedings of the 7th Python in Science Conference (SciPy2008), Gäel Varoquaux, Travis Vaught, and Jarrod Millman (Eds), (Pasadena, CA USA), pp. 11–15, Aug 2008 (https://networkx.github.io/documentation/stable/reference/generated/networkx.generators.random_graphs.gnp_random_graph.html#networkx.generators.random_graphs.gnp_random_graph)
 
-A. Lucas,
-"Ising formulations of many NP problems",
-`doi: 10.3389/fphy.2014.00005 <https://www.frontiersin.org/articles/10.3389/fphy.2014.00005/full>`_
+.. [2] Andrew Lucas, "Ising formulations of many NP problems", `doi: 10.3389/fphy.2014.00005 <https://www.frontiersin.org/articles/10.3389/fphy.2014.00005/full>`_
+
+.. [3] Hayato Ushijima-Mwesigwa, Christian FA Negre, and Susan M. Mniszewski, "Graph partitioning using quantum annealing on the D-Wave system." Proceedings of the Second International Workshop on Post Moores Era Supercomputing. ACM, 2017.
 
 License
 -------
