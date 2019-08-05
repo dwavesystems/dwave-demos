@@ -39,11 +39,11 @@ for u, v in G.edges:
     Q[(v,v)] += 1
     Q[(u,v)] -= 2
 
-for u in G.nodes:
-    Q[(u,u)] += gamma*(-1*len(G.nodes)+1)
+for i in G.nodes:
+    Q[(i,i)] += gamma*(1-1*len(G.nodes))
 
-for u,v in combinations(G.nodes,2):
-	Q[(u,v)] += 2*gamma
+for i,j in combinations(G.nodes,2):
+	Q[(i,j)] += 2*gamma
 
 # ------- Run our QUBO on the QPU -------
 
