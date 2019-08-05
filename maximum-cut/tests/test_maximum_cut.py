@@ -2,7 +2,7 @@ import os
 import subprocess
 import unittest
 
-# /path/to/demos/pipelines/tests/test_maximum_cut.py
+# /path/to/demos/maximum-cut/tests/test_maximum_cut.py
 project_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
