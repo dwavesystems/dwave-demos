@@ -37,7 +37,7 @@ Q = defaultdict(int)
 for u, v in G.edges:
     Q[(u,u)] += 1
     Q[(v,v)] += 1
-    Q[(u,v)] -= 2
+    Q[(u,v)] += -2
 
 for i in G.nodes:
     Q[(i,i)] += gamma*(1-1*len(G.nodes))
