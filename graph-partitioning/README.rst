@@ -59,7 +59,7 @@ To combine our objective and constraints into a single QUBO expression, we simpl
    :align: center
    :height: 100
 
-In the code, we create this Q matrix as a dictionary iteratively, looping over the edges and nodes in our graph just as we see in the summation of our QUBO expression.
+In the code, we create the Q matrix for this QUBO as a dictionary iteratively, looping over the edges and nodes in our graph just as we see in the summation of our QUBO expression.
 
 This demo generates an Erdos-Renyi random graph using the ``networkx`` package for our problem instance [1]_.  The graph is constructed with 40 nodes, and each possible edge between two nodes appears with probability p=0.20.
 
