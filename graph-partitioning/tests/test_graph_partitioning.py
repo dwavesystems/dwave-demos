@@ -2,7 +2,7 @@ import os
 import subprocess
 import unittest
 
-# /path/to/demos/graph_partitioning/tests/test_graph_partitioning.py
+# /path/to/demos/graph-partitioning/tests/test_graph_partitioning.py
 project_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
