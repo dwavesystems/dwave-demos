@@ -68,7 +68,7 @@ This demo generates an Erdos-Renyi random graph using the ``networkx`` package f
 
 For chain strength, we examine the entries in our Q matrix and choose a relatively large number to enforce chains in our embedding.  For this problem, our largest matrix entries are the linear coefficients (approximately size ``gamma*(1-1*len(G.nodes))``) and so a value of ``gamma*len(G.nodes)`` is chosen on line 51 for ``chain_strength``.
 
-For gamma, our Lagrange parameter, a good number to start with is an estimate for your optimal objective function value.  Since we are utilizing Erdos-Renyi random graphs, we assume that our graph will have about 20% of the number of cut edges that a complete graph would have (since our edge probability in G is also 20%).  Since a complete graph on 40 nodes has 720 edges and 20% of 720 is 156, we start with ``gamma=156``.  
+For gamma, our Lagrange parameter, a good number to start with is an estimate for your optimal objective function value.  Since we are utilizing Erdos-Renyi random graphs, we assume that our graph will have about 20% of the number of cut edges that a complete graph would have (since our edge probability in G is also 20%).  Since a complete graph on 40 nodes has 720 edges and any partition into equal subsets results in a cut of size 400.  Since we are examining an Erdos-Renyi random graph with an edge probability of 20%, we can estimate a cut of size approximately 20% of 400, or 80 edges. This leads us to try a Lagrange parameter of 80, which is implemented in our program with ``gamma=80``.  
 
 References
 ----------
