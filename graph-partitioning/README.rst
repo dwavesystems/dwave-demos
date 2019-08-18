@@ -22,7 +22,7 @@ The code implements a QUBO formulation of this problem.
 
 The answer that we are looking for is a partition of the nodes in the graph, so we will assign a binary variable for each node, i.e. variable x_i denotes whether node i is in one subset (call it Subset 0) or the other (Subset 1).
 
-The objective function that we want should minimize the number of cut edges.  To count how many cut edges we have given a partition of the nodes (assignment of our binary variables), we consider a single edge in a graph in the table below.  We only want to count an edge if the endpoints are in different subsets, and so we assign a 1 for the edge column in this case and a 0 otherwise.
+The objective function that we want should minimize the number of cut edges.  To count how many cut edges we have given a partition of the nodes (assignment of our binary variables), we start with a single edge.  The table below shows how we count the cut edges for a given graph partition (assignment of values to our binary variables). Columns :math:x_i: and :math:x_j` are two nodes; column edge (i, j) represents an edge between these two nodes.  We only want to count an edge if the endpoints are in different subsets, and so we assign a 1 for the edge column in this case and a 0 otherwise.
 
 === === ==========
 x_i x_j edge (i,j)
@@ -33,7 +33,7 @@ x_i x_j edge (i,j)
 1   1   0
 === === ==========
 
-From this table, we see that we can use the expression :math:`x_i+x_j-2x_ix_j` to calculate the edge column in our table.  Now for our entire graph, our objective function can be written as shown below, where the sum is over all edges in the graph.
+From this table, we see that we can use the expression :math:`x_i+x_j-2x_ix_j` to calculate the edge column in our table.  Now for our entire graph, our objective function can be written as shown below, where the sum is over all edges in the graph, denoted by E.
 
 .. math::
     \sum_{(i,j) \in E} (x_i+x_j-2x_ix_j)
