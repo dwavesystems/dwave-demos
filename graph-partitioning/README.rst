@@ -2,7 +2,7 @@ Graph Partitioning Demo
 =======================
 In this demo, we explore the graph partitioning problem.  This is an interesting problem from graph theory with a wide variety of applications (see e.g. [3]_).
 
-For example, suppose that we have a group of people that we need to split into two equal-sized teams.  For each pair of people there is a relationship:  friends or enemies.  We want to have as few friends on opposite teams as possible.  How can we solve this problem?
+For example, suppose that we have a group of people that we need to split into two equal-sized teams.  Between some pairs of people there is a friendly relationship.  We want to have as few friends on opposite teams as possible.  How can we solve this problem?
 
 One way to solve this problem is with the graph partitioning problem.  If we think of our group of people as a graph (a node/vertex for each person), and draw an edge between people that are friends, we have a model of our network.  If we look for a minimum cut in our graph, then we are looking for a way to split the nodes into two groups so that there are as few edges as possible between the groups.  In our group of peoople, this means that we have two teams with as few friends as possible on different teams.
 
