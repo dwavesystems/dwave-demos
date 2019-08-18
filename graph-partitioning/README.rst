@@ -6,7 +6,7 @@ For example, suppose that we have a group of people that we need to split into t
 
 One way to solve this problem is with the graph partitioning problem.  If we think of our group of people as a graph (a node/vertex for each person), and draw an edge between people that are friends, we have a model of our network.  If we look for a minimum cut [4]_ in our graph, then we are looking for a way to split the nodes into two groups so that there are as few edges as possible between the groups.  In our group of peoople, this means that we have two teams with as few friends as possible on different teams.
 
-We will run the graph partitioning problem on an Erdos-Renyi random graph with probability 0.2 on 40 nodes to find the best way of splitting the graph into two subsets to minimize the number of cut edges.
+We will run the demo to find the best way of splitting a 40-node graph (an Erdos-Renyi random graph that probabilistically creates an edge between 20% of its node pairs) into two subsets to minimize the number of cut edges.
 
 Usage
 -----
