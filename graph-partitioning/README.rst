@@ -22,7 +22,7 @@ The code implements a QUBO formulation of this problem.
 
 The answer that we are looking for is a partition of the nodes in the graph, so we will assign a binary variable for each node, i.e. variable x_i denotes whether node i is in one subset (call it Subset 0) or the other (Subset 1).
 
-The objective function that we are looking to optimize is minimizing the number of cut edges.  To count how many cut edges we have given a partition of the nodes (assignment of our binary variables), we consider a single edge in a graph in the table below.  We only want to count an edge if the endpoints are in different subsets, and so we assign a 1 for the edge column in this case and a 0 otherwise.
+The objective function that we want should minimize the number of cut edges.  To count how many cut edges we have given a partition of the nodes (assignment of our binary variables), we consider a single edge in a graph in the table below.  We only want to count an edge if the endpoints are in different subsets, and so we assign a 1 for the edge column in this case and a 0 otherwise.
 
 === === ==========
 x_i x_j edge (i,j)
