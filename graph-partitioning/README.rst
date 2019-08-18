@@ -14,7 +14,7 @@ To run the demo, type:
 ::
   python graph_partitioning.py
 
-After running, output will be printed to the command line that states whether or not the best (lowest energy) solution found is a valid partition of two equal-sized sets.  If the solution is valid (feasible), then the number of cut edges for that solution is displayed.
+After running, output will be printed to the command line that states whether or not the best (lowest energy) solution found is a valid partition that splits the graph into two sets of 20 nodes.  If the solution is valid (feasible), then the number of cut edges for that solution is displayed.
 
 Code Overview
 -------------
