@@ -58,7 +58,7 @@ response = sampler.sample_qubo(Q, chain_strength=chain_strength, num_reads=num_r
 sample = response.record.sample[0]
 if sum(sample) == 20:
     num_cut_edges = 0
-    for u,v in G.edges:
+    for u, v in G.edges:
         num_cut_edges += sample[u] + sample[v] - 2*sample[u]*sample[v]
     print("Valid partition found with", num_cut_edges, "cut edges.")
 else:
