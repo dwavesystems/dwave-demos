@@ -27,7 +27,7 @@ gamma = 156
 # ------- Set up our graph -------
 G = nx.gnp_random_graph(40, 0.2)
 
-print("\nGraph on",len(G.nodes),"nodes created with",len(G.edges),"out of",len(G.nodes)*(len(G.nodes)-1)/2,"possible edges.\n")
+print("Graph on {} nodes created with {} out of {} possible edges.".format(len(G.nodes), len(G.edges), len(G.nodes) * (len(G.nodes)-1) / 2))
 
 # ------- Set up our QUBO dictionary -------
 
