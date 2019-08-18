@@ -22,7 +22,7 @@ import math
 
 # ------- Set tunable parameters -------
 num_reads = 1000
-gamma = 156
+gamma = 80
 
 # ------- Set up our graph -------
 G = nx.gnp_random_graph(40, 0.2)
