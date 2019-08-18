@@ -33,7 +33,7 @@ x_i x_j edge (i,j)
 1   1   0
 === === ==========
 
-From this table, we see that we can use the expression :math:x_i+x_j-2x_ix_j to calculate the edge column in our table.  Now for our entire graph, our objective function can be written as shown below, where the sum is over all edges in the graph.
+From this table, we see that we can use the expression :math:`x_i+x_j-2 x_i x_j` to calculate the edge column in our table.  Now for our entire graph, our objective function can be written as shown below, where the sum is over all edges in the graph.
 
 .. image:: readme_imgs/QUBO.png
 
