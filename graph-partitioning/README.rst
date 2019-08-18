@@ -40,7 +40,7 @@ From this table, we see that we can use the expression :math:`x_i+x_j-2x_ix_j` t
 
 .. image:: readme_imgs/QUBO.png
 
-Next we need to consider our constraint:  Subset 0 and Subset 1 must have the same sizes.  We can measure the size of Subset 1 by summing up our binary variables.  To ensure the two subsets have the same size, we enforce a constraint that Subset 1 has size equal to half of all nodes in the graph.  We first consider how to represent this constraint mathematically using our chosen binary variables, and use the following equality to represent our constraint.
+Next we need to consider our constraint:  Subset 0 and Subset 1 must have the same sizes.  We can measure the size of Subset 1 by summing up our binary variables.  To ensure the two subsets have the same size, we enforce a constraint that Subset 1 has size equal to half of all nodes in the graph.  We first consider how to represent this constraint mathematically using our chosen binary variables, and use the following equality to represent our constraint, where V represents the set of all nodes in the graph.
 
 .. image:: readme_imgs/constraint_1.png
 
