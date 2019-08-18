@@ -64,7 +64,7 @@ To combine our objective and constraints into a single QUBO expression, we simpl
 
 In the code, we create the Q matrix for this QUBO as a dictionary iteratively, looping over the edges and nodes in our graph just as we see in the summation of our QUBO expression.
 
-This demo generates an Erdos-Renyi random graph using the ``networkx`` package for our problem instance [1]_. There are three parameters to be set by the user in this code:  chain strength, number of reads, and gamma.  Since this is a relatively large problem, we set a large number of reads (shown on line 23 with ``num_reads = 1000``).  
+This demo generates an Erdos-Renyi random graph using the ``networkx`` package for our problem instance [1]_. There are three parameters to be set by the user in this code:  chain strength, number of reads, and gamma.  Since this is a relatively large problem, we set a large number of reads (``num_reads = 1000``).  
 
 For chain strength, we examine the entries in our Q matrix and choose a relatively large number to enforce chains in our embedding.  For this problem, our largest matrix entries are the linear coefficients (approximately size ``gamma*(1-1*len(G.nodes))``) and so a value of ``gamma*len(G.nodes)`` is chosen on line 51 for ``chain_strength``.
 
