@@ -42,7 +42,7 @@ for u, v in G.edges:
 for i in G.nodes:
     Q[(i,i)] += gamma*(1-len(G.nodes))
 
-for i,j in combinations(G.nodes,2):
+for i, j in combinations(G.nodes, 2):
 	Q[(i,j)] += 2*gamma
 
 # ------- Run our QUBO on the QPU -------
