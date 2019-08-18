@@ -18,6 +18,7 @@ from collections import defaultdict
 from itertools import combinations
 from dwave.system.samplers import DWaveSampler
 from dwave.system.composites import EmbeddingComposite
+import math
 
 # ------- Set tunable parameters -------
 num_reads = 1000
@@ -56,7 +57,9 @@ response = sampler.sample_qubo(Q, chain_strength=chain_strength, num_reads=num_r
 
 # See if the best solution found is feasible, and if so print the number of cut edges.
 sample = response.record.sample[0]
-if sum(sample) == 20:
+
+# In the case when n is odd, the set may have one more or one fewer nodes
+if sum(sample) in [math.floor(len(G.nodes)/2), math.ceil(len(G.nodes)/2)]:
     num_cut_edges = 0
     for u, v in G.edges:
         num_cut_edges += sample[u] + sample[v] - 2*sample[u]*sample[v]
