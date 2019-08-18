@@ -60,6 +60,6 @@ if sum(sample) == 20:
     num_cut_edges = 0
     for u,v in G.edges:
         num_cut_edges += sample[u] + sample[v] - 2*sample[u]*sample[v]
-    print("Valid partition found with",num_cut_edges,"cut edges.\n")
+    print("Valid partition found with", num_cut_edges, "cut edges.")
 else:
-    print("Invalid partition.\n")
+    print("Invalid partition.")
