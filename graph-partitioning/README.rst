@@ -4,7 +4,7 @@ In this demo, we explore the graph partitioning problem.  This is an interesting
 
 For example, suppose that we have a group of people that we need to split into two equal-sized teams.  Between some pairs of people there is a friendly relationship.  We want to have as few friends on opposite teams as possible.  How can we solve this problem?
 
-One way to solve this problem is with the graph partitioning problem.  If we think of our group of people as a graph (a node/vertex for each person), and draw an edge between people that are friends, we have a model of our network.  If we look for a minimum cut in our graph, then we are looking for a way to split the nodes into two groups so that there are as few edges as possible between the groups.  In our group of peoople, this means that we have two teams with as few friends as possible on different teams.
+One way to solve this problem is with the graph partitioning problem.  If we think of our group of people as a graph (a node/vertex for each person), and draw an edge between people that are friends, we have a model of our network.  If we look for a minimum cut [4]_ in our graph, then we are looking for a way to split the nodes into two groups so that there are as few edges as possible between the groups.  In our group of peoople, this means that we have two teams with as few friends as possible on different teams.
 
 We will run the graph partitioning problem on an Erdos-Renyi random graph with probability 0.2 on 40 nodes to find the best way of splitting the graph into two subsets to minimize the number of cut edges.
 
@@ -76,6 +76,8 @@ References
 .. [2] Andrew Lucas, "Ising formulations of many NP problems", `doi: 10.3389/fphy.2014.00005 <https://www.frontiersin.org/articles/10.3389/fphy.2014.00005/full>`_
 
 .. [3] Hayato Ushijima-Mwesigwa, Christian FA Negre, and Susan M. Mniszewski, "Graph partitioning using quantum annealing on the D-Wave system." Proceedings of the Second International Workshop on Post Moores Era Supercomputing. ACM, 2017.
+
+.. [4] Wikipedia contributors, "Minimum cut," Wikipedia, The Free Encyclopedia, https://en.wikipedia.org/w/index.php?title=Minimum_cut&oldid=907409652 (accessed August 18, 2019).
 
 License
 -------
