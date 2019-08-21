@@ -35,9 +35,6 @@ x_i x_j edge (i,j)
 
 From this table, we see that we can use the expression :math:`x_i+x_j-2x_ix_j` to calculate the edge column in our table.  Now for our entire graph, our objective function can be written as shown below, where the sum is over all edges in the graph, denoted by E.
 
-.. math::
-    \sum_{(i,j) \in E} (x_i+x_j-2x_ix_j)
-
 .. image:: readme_imgs/QUBO.png
 
 Next we need to consider our constraint:  Subset 0 and Subset 1 must have the same sizes.  We can measure the size of Subset 1 by summing up our binary variables.  To ensure the two subsets have the same size, we enforce a constraint that Subset 1 has size equal to half of all nodes in the graph.  We first consider how to represent this constraint mathematically using our chosen binary variables, and use the following equality to represent our constraint, where V represents the set of all nodes in the graph.
