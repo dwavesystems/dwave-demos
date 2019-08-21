@@ -41,7 +41,7 @@ Next we need to consider our constraint:  Subset 0 and Subset 1 must have the sa
 
 .. image:: readme_imgs/constraint_1.png
 
-For a QUBO, we need our constraints to be represented by mathematical expressions that are satisfied at their minimum value.  For this constraint, we can use the following expression that has a minimum value of 0 that occurs when Subset 1 has size exactly `|V|`/2.
+For a QUBO, we need our constraints to be represented by mathematical expressions that are satisfied at their minimum value.  For this constraint, we can use the following expression that has a minimum value of 0 that occurs when Subset 1 has size exactly ``|V|/2``.
 
 .. image:: readme_imgs/constraint_2.png
 
