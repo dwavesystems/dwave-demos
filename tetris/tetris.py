@@ -3,7 +3,6 @@
 # Modifications by Mitchell Roman
 # http://inventwithpython.com/pygame
 # Released under a "Simplified BSD" license
-import dwave_networkx as dnx
 import networkx as nx
 import matplotlib.pyplot as plt
 import random, time, pygame, sys
