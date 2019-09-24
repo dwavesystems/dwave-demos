@@ -75,6 +75,56 @@ if fallingPiece['shape']=='I' and all([isinstance(y,int) for x in board[-4:] for
                 h,J,static = generate_h_J(board,fallingPiece,embedding)
                 no_valid = True
                 holes=has_holes(board)
-                ```
+                
+```
+Also the coordinates to translation and rotation sometimes places the peice in the wrong spot, which I think has something to do with the random starting orientation of a piece. Currently have a slightly "hacky" solution in place with a correction dictionary however it should be possible to avoid alot of the logic based on the shape of the falling peice. 
+```python
+def coord_to_x_rot(coords,piece):# takes the coordinates from flipped and returns the x translation and
+    shape = piece['shape']      # rotation in tuple format
+    xpos = piece['x']
+    rotation = piece['rotation']
+    correction ={'S': {0: 1, 1: 2},
+                 'Z': {0: 1, 1: 1},
+                 'J': {0: 1, 1: 2, 2: 1, 3: 1},
+                 'L': {0: 1, 1: 2, 2: 1, 3: 1},
+                 'I': {0: 2, 1: 0},
+                 'O': {0: 1},
+                 'T': {0: 1, 1: 2, 2: 1, 3: 1}}
+    valid = shape_to_valid_coord_set(eval(shape+'_SHAPE_TEMPLATE'))
+    initial_rot_coords = valid[rotation]
+    final_rot = None
+    var_to_grid = [tuple(map(int,var.split('_'))) for var in coords]
+    var_min_X = min([s[0] for s in var_to_grid])
+    var_min_Y = min([s[1] for s in var_to_grid])
+    var_patternx = [s[0]-var_min_X for s in var_to_grid] 
+    var_patterny = [s[1]-var_min_Y for s in var_to_grid]
 
+    for i,shap in enumerate(valid):
+        min_X=min([s[0] for s in shap])
+        min_Y=min([s[1] for s in shap])
+        patternx = [s[0]-min_X for s in shap]
+        patterny = [s[1]-min_Y for s in shap]
+        if patternx==var_patternx and patterny==var_patterny:
+            print("looped ",i,' times')
+            final_rot = i 
+            break
+        else:
+            final_rot=0
+    if shape is 'O':
+        rotate = 0
+        corr = 1
+        rot_coords_diff =min([x[0] for x in var_to_grid])-min([x[0] for x in initial_rot_coords])
+        x_translate =rot_coords_diff-xpos+corr
+    elif shape in ['T','L','J']:
+        rotate = len(valid)-1 if final_rot==0 else final_rot-1 
+        corr= correction[shape][rotate]  
+        rot_coords_diff =min([x[0] for x in var_to_grid])-min([x[0] for x in initial_rot_coords])
+        x_translate =rot_coords_diff-xpos
+    elif shape in ['S','Z','I']:
+        rotate = len(valid)-1 if final_rot==0 else final_rot-1 
+        corr= correction[shape][rotate]  
+        rot_coords_diff =min([x[0] for x in var_to_grid])-min([x[0] for x in initial_rot_coords])
+        x_translate =rot_coords_diff-xpos+corr
+    return(x_translate,rotate)
+```
  
