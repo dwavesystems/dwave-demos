@@ -93,7 +93,8 @@ jobs:
                 done
 
                 # accumulate test status
-                (( job_status |= test_status ))
+                # (don't fail for zero results in -e mode)
+                (( job_status |= test_status )) || true
               fi
             done
             
